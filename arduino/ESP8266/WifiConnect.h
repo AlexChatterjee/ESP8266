@@ -20,9 +20,4 @@ class WifiConnect {
     void connectToWifi();
     void sendHTTPRequest(String api, String payload);
   };
-
-
-
-
-//void scanWifi(bool scanWifiBool);
 #endif

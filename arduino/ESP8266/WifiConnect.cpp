@@ -1,7 +1,7 @@
 #include "WifiConnect.h"
 
 #include <ESP8266HTTPClient.h>
-#include "ESP8266WiFi.h"
+#include "ESP8266WiFi.h" //https://github.com/esp8266/Arduino
 
 /*Wifi router information*/
 WifiConnect::WifiConnect(char* ssid,char* password,char* serverPath)
@@ -103,6 +103,7 @@ void WifiConnect::sendHTTPRequest(String api, String payload)
         http.addHeader("Content-Type", "application/json");
 
         //get payload from the board
+        //String payload = getTempAndHumidity(); //json payload has been changed
         
         //get local ip and send some data
          Serial.println("Debug Payload to be sent:"+payload);
