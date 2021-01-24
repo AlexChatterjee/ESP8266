@@ -4,10 +4,12 @@
 
 class TempAndHum {
   private:
+    int GPIONumber;
     float getTemp();
     float getHum();
+    
   public:
-    TempAndHum();
+    TempAndHum(int GPIONumber);
     void init();
     String getTempAndHumidity();  
 };

@@ -2,20 +2,19 @@
 #include "DHT.h"
 
 //define source pin for DHT11 sensor Pin D4 - pin2
-#define DHT_PIN 2
 #define DHT_SENSOR_TYPE DHT11
+DHT dht(2, DHT_SENSOR_TYPE); //constant GPIO pin
 
-//Create DHT object
-DHT dht(DHT_PIN, DHT_SENSOR_TYPE);
-
-TempAndHum::TempAndHum()
+TempAndHum::TempAndHum(int GPIONumber)
 {
-  
+  this->GPIONumber = GPIONumber;
+  init();
 }
 
 void TempAndHum::init()
 {
-  
+  //Create DHT object
+  dht.begin(); //!important: without it there is no correct communication with the sensor
 }
 
 float TempAndHum::getTemp()
@@ -32,13 +31,8 @@ String TempAndHum::getTempAndHumidity()
 { 
   float h = this->getHum();
   float t = this->getTemp();
-  
-  while(isnan(h))
-  {
-      h = this->getHum();
-      t = this->getTemp();
-  }
 
-  String jsonFormat = "{\"T\":"+String(t)+",\"H\":"+String(h)+"}";
-  return jsonFormat;
+  //if you get nan feedback, it means that your sensor is not correctly wired to the NodeMCU
+  String returnString = "\"T\":"+String(t)+",\"H\":"+String(h);
+  return returnString;
 }

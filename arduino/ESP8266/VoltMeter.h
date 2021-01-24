@@ -8,10 +8,11 @@ class VoltMeter {
     int sensorValue;
     bool dividerOn;
     float dividerMultiplier; //(R1+R2)/R2
+    bool verbose;
     
   public:
-    VoltMeter();
-    VoltMeter(int R1Value, int R2Value);
+    VoltMeter(bool verbose);
+    VoltMeter(int R1Value, int R2Value, bool verbose);
     
     void init();
     float getVoltage();

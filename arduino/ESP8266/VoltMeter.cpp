@@ -1,15 +1,17 @@
 #include "VoltMeter.h"
 
-VoltMeter::VoltMeter()
+VoltMeter::VoltMeter(bool verbose)
 {
+  this->verbose = verbose;
   this->dividerOn = false;
   this->dividerMultiplier = 0;  
   
   init();
 }
 
-VoltMeter::VoltMeter(int R1Value, int R2Value)
+VoltMeter::VoltMeter(int R1Value, int R2Value , bool verbose)
 {
+  this->verbose = verbose;
   this->dividerOn = true;
   this->dividerMultiplier = (R1Value+R2Value)/R2Value;
    
@@ -24,9 +26,13 @@ void VoltMeter::init()
 
 float VoltMeter::getVoltage()
 {
-  Serial.println("**********************");
-  Serial.println("Divider cuircuit: "+String(this->dividerOn));
-  return computeRealVoltage(getSignal());
+  if(this->verbose)
+  {
+    Serial.println("**********************");
+    Serial.println("Divider cuircuit: "+String(this->dividerOn));    
+  }
+
+  return computeRealVoltage(getSignal());  
 }
 
 int VoltMeter::getSignal()
@@ -36,7 +42,11 @@ int VoltMeter::getSignal()
 
 float VoltMeter::computeRealVoltage(int sensorValue)
 {
-  Serial.println("SensorValue: "+String(sensorValue));
+  if(this->verbose)
+  {
+    Serial.println("SensorValue: "+String(sensorValue));
+  }
+  
   float vinVoltage= 0.0;
   float realVoltage = 0.0;
 
@@ -44,8 +54,12 @@ float VoltMeter::computeRealVoltage(int sensorValue)
   {
     vinVoltage = (3.3*sensorValue)/1023;
   }
+  
+  if(this->verbose)
+  {
+    Serial.println("vinVoltage: "+String(vinVoltage));
+  }
 
-  Serial.println("vinVoltage: "+String(vinVoltage));
 
   if(this->dividerOn)
   {
@@ -55,8 +69,11 @@ float VoltMeter::computeRealVoltage(int sensorValue)
   else
     realVoltage = vinVoltage;
 
-  Serial.println("realVoltage: "+String(realVoltage));
-  Serial.println("**********************");
-  
+  if(this->verbose)
+  {
+    Serial.println("realVoltage: "+String(realVoltage));
+    Serial.println("**********************");
+  }
+
   return realVoltage;
 }
